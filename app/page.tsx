@@ -2,17 +2,11 @@
 
 import '@/app/globals.css';
 import React, { useState } from "react";
-import { Upload, FileUp, Code2 } from 'lucide-react';
+import { Upload, Code2 } from 'lucide-react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { motion, AnimatePresence } from "framer-motion";
 
-interface Token {
-  type: string;
-  value: string;
-  line: number;
-  char: number;
-}
 
 export default function Home() {
   const [tableData, setTableData] = useState<Token[]>([]);
@@ -142,7 +136,7 @@ export default function Home() {
 
         else if (char === '/' && line[localCharIndex + 1] === '*') {
           let value = '/*';
-          let startCharIndex = globalCharIndex;
+          const startCharIndex = globalCharIndex;
           localCharIndex += 2;
           globalCharIndex += 2;
 
