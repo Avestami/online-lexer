@@ -3,7 +3,6 @@
 import '@/app/globals.css';
 import React, { useState } from "react";
 import { Upload, FileUp, Code2 } from 'lucide-react';
-import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { motion, AnimatePresence } from "framer-motion";
@@ -59,7 +58,6 @@ export default function Home() {
       while (localCharIndex < line.length) {
         const char = line[localCharIndex];
 
-        // Handle Preprocessor Directives
         if (localCharIndex === 0 && char === '#') {
           const directive = line.trim();
           tokens.push({
@@ -68,11 +66,11 @@ export default function Home() {
             line: lineIndex + 1,
             char: globalCharIndex + 1,
           });
-          globalCharIndex += line.length + 1; // Add entire line and newline
-          return; // Move to next line
+          globalCharIndex += line.length + 1;
+          return;
         }
 
-        // Handle Numeric Literals
+
         if (char.match(/[0-9]/)) {
           let value = '';
           const startCharIndex = globalCharIndex;
@@ -80,6 +78,7 @@ export default function Home() {
             value += line[localCharIndex];
             localCharIndex++;
             globalCharIndex++;
+
           }
           tokens.push({
             type: 'Literal',
@@ -89,7 +88,7 @@ export default function Home() {
           });
         }
 
-        // Handle Keywords and Identifiers
+
         else if (char.match(/[a-zA-Z_]/)) {
           let value = '';
           const startCharIndex = globalCharIndex;
@@ -106,7 +105,7 @@ export default function Home() {
           });
         }
 
-        // Handle Operators
+
         else if (operators.includes(char)) {
           tokens.push({
             type: 'Operator',
@@ -118,7 +117,6 @@ export default function Home() {
           globalCharIndex++;
         }
 
-        // Handle Delimiters
         else if (delimiters.includes(char)) {
           tokens.push({
             type: 'Delimiter',
@@ -130,7 +128,6 @@ export default function Home() {
           globalCharIndex++;
         }
 
-        // Handle Single-line Comments
         else if (char === '/' && line[localCharIndex + 1] === '/') {
           const comment = line.slice(localCharIndex);
           tokens.push({
@@ -139,11 +136,10 @@ export default function Home() {
             line: lineIndex + 1,
             char: globalCharIndex + 1,
           });
-          globalCharIndex += line.length - localCharIndex + 1; // Skip to end of line
-          return; // Move to next line
+          globalCharIndex += line.length - localCharIndex + 1;
+          return;
         }
 
-        // Handle Multi-line Comments
         else if (char === '/' && line[localCharIndex + 1] === '*') {
           let value = '/*';
           let startCharIndex = globalCharIndex;
@@ -155,12 +151,14 @@ export default function Home() {
               line[localCharIndex + 1] !== '/'
               ) {
             value += line[localCharIndex];
+
             localCharIndex++;
-            globalCharIndex++;
+            globalCharIndex = 0;
             if (localCharIndex >= line.length) {
               value += '\n';
-              line = lines[++lineIndex]; // Go to next line
+              line = lines[++lineIndex];
               localCharIndex = 0;
+
             }
           }
           value += '*/';
@@ -174,15 +172,13 @@ export default function Home() {
           globalCharIndex += 2;
         }
 
-        // Handle whitespace and unrecognized characters
         else {
           localCharIndex++;
-          globalCharIndex++;
+
         }
       }
 
-      // Account for the newline character
-      globalCharIndex++;
+
     });
 
     return tokens;
@@ -190,9 +186,6 @@ export default function Home() {
 
 
   return (
-      <div className="bg-blue-500 text-white p-4">
-        <p>Tailwind CSS is working!</p>
-
   <div className="min-h-screen bg-gradient-to-br from-indigo-100 to-purple-100 p-8">
     <Card className="w-full max-w-4xl mx-auto">
       <CardHeader>
@@ -260,7 +253,6 @@ export default function Home() {
       </CardContent>
     </Card>
   </div>
-      </div>
 )
   ;
 }
